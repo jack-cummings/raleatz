@@ -86,9 +86,22 @@ async def user_input(request: Request):
             out_list.append(x.split('=')[1].replace('+', ' '))
 
         # Filter down Dataframe
-        sql = f'Select Name, Cuisine, Location, Cocktails, Beer, Food, Seating, Price' \
-              f' FROM {username} WHERE Cuisine = {out_list[0]} and Location = {out_list[1]}'
+        # Create sql
+        base_sql = f"""Select Name, Cuisine, Location, Cocktails, Beer, Food, Seating, Price FROM {username} """
+        if out_list[0] != 'Any':
+            if out_list[1] != 'Any':
+                insert = f"WHERE Cuisine = '{out_list[0]}' and Location = '{out_list[1]}'"
+            else:
+                insert = f"WHERE Cuisine = '{out_list[0]}'"
+        else:
+            if out_list[1] != 'Any':
+                insert = f"WHERE Location = '{out_list[1]}'"
+            else:
+                insert =""
+        sql = base_sql+insert
         df = pd.read_sql(sql, con=con)
+        if len(df) == 0:
+            df = pd.read_sql(base_sql, con=con)
 
         # Calculate similarity for remaining rows
         def calcSimScore(row, user_array):
