@@ -16,6 +16,7 @@
 
     <!-- Bootstrap CSS / Color Scheme -->
     <link rel="stylesheet" href="assets/css/orange.css" id="theme-color">
+
 </head>
 <body>
 
@@ -111,10 +112,6 @@
                                     <h3>How were the drinks?</h3>
                                     <div>
                                       <div class="custom-control custom-checkbox custom-control-inline">
-                                        <input name="drink_style" id="drink_style_0" type="checkbox" class="custom-control-input" value="Cocktails">
-                                        <label for="drink_style_0" class="custom-control-label">Fancy Cocktails</label>
-                                      </div>
-                                      <div class="custom-control custom-checkbox custom-control-inline">
                                         <input name="drink_style" id="drink_style_1" type="checkbox" class="custom-control-input" value="Casual Beer">
                                         <label for="drink_style_1" class="custom-control-label">Casual Beer</label>
                                       </div>
@@ -122,9 +119,13 @@
                                         <input name="drink_style" id="drink_style_2" type="checkbox" class="custom-control-input" value="Craft Beer">
                                         <label for="drink_style_2" class="custom-control-label">Craft Beer</label>
                                       </div>
-                                      <div class="custom-control custom-checkbox custom-control-inline">
+                                    <div class="custom-control custom-checkbox custom-control-inline">
                                         <input name="drink_style" id="drink_style_3" type="checkbox" class="custom-control-input" value="Casual Cocktails">
                                         <label for="drink_style_3" class="custom-control-label">Casual Cocktails</label>
+                                      </div>
+                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                        <input name="drink_style" id="drink_style_0" type="checkbox" class="custom-control-input" value="Cocktails">
+                                        <label for="drink_style_0" class="custom-control-label">Fancy Cocktails</label>
                                       </div>
                                     </div>
                                   </div>
@@ -133,19 +134,21 @@
                                     <div>
                                       <select id="Cost" name="Cost" required="required" class="custom-select">
                                         <option value="Select">Select</option>
-                                        <option value="Not Bad">Not Bad</option>
-                                        <option value="Night Out">Night Out</option>
-                                        <option value="Bougie">Bougie</option>
-                                        <option value="Cheap">Cheap</option>
+                                        <option value="Cheap ($)">Cheap</option>
+                                        <option value="Not Bad ($$)">Not Bad</option>
+                                        <option value="Night Out ($$$)">Night Out</option>
+                                        <option value="Bougie ($$$$)">Bougie</option>
                                       </select>
                                     </div>
                                   </div>
                                   <div class="form-group">
-                                    <button name="submit" type="submit" class="btn btn-primary">Submit</button>
+                                    <label for="customRange" class="form-label">Custom range</label>
+                                    <input type="range" class="form-range" id="customRange" name="points" min="0" max="4">
                                   </div>
+                                      <div class="form-group">
+                                        <button name="submit" type="submit" class="btn btn-primary">Submit</button>
+                                      </div>
                                 </form>
-
-
                         </div>
                     </div>
                 </div>

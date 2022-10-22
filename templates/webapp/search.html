@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Raleatz</title>
+
+    <!--Inter UI font-->
+    <link href="https://rsms.me/inter/inter-ui.css" rel="stylesheet">
+
+    <!--vendors styles-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+
+    <!-- Bootstrap CSS / Color Scheme -->
+    <link rel="stylesheet" href="assets/css/orange.css" id="theme-color">
+<script>
+    datalist {
+      display: flex;
+      justify-content: space-between;
+      color: red;
+      width: 50%;
+    }
+
+    input {
+      width: 50%;
+    }
+</script>
+</head>
+<body>
+
+<!--navigation-->
+<section class="smart-scroll">
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-md navbar-dark">
+            <a class="navbar-brand heading-black" href="/">
+                Raleatz
+            </a>
+            <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse"
+                    data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span data-feather="grid"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link page-scroll" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link page-scroll" href="#pricing">Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link page-scroll" href="#faq">FAQ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link page-scroll" href="#blog">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</section>
+
+<!--Generic section-->
+<section class="py-7 bg-dark" id="test">
+    <div class="container">
+        <div class="row pt-3 pricing-table mx-auto">
+            <div class="col-12 mx-auto">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title">Where Should We Eat??</h2>
+                            <div class="text-muted font-weight-medium mt-2"> </div>
+                                 <form method="post" action="run_search">
+                                 <div class="form-group">
+                                        <h3 for="type">What kind of food?</h3>
+                                        <div>
+                                          <select id="cuisine" name="type" required="required" class="custom-select">
+                                            <option value="Cuisine">Any</option>
+                                            <option value="Italian">Italian</option>
+                                            <option value="American">American</option>
+                                            <option value="Mexican">Mexican</option>
+                                            <option value="Chinese">Chinese</option>
+                                            <option value="Japanese">Japanese</option>
+                                          </select>
+                                        </div>
+                                 </div>
+                                 <div class="form-group">
+                                        <h3 for="type">Where do you want to go?</h3>
+                                        <div>
+                                          <select id="location" name="location" required="required" class="custom-select">
+                                            <option value="Location">Any</option>
+                                            <option value="North Hills">North Hills</option>
+                                            <option value="Five Points">Five Points</option>
+                                            <option value="Glenwood South<">Glenwood South</option>
+                                            <option value="Wake Forest Rd<">Wake Forest Rd</option>
+                                            <option value="Downtown">Downtown</option>
+                                            <option value="Other">Other</option>
+                                          </select>
+                                        </div>
+                                 </div>
+                                  <!-- Begin Cocktails -->
+                                  <div class="form-group">
+                                    <h3 for="Price" class="form-label">Are you in a cocktail mood?</h3>
+                                    <label for="" class="pull-left">No Cocktails</label>
+                                    <label for="" class="pull-right">Fancy Cocktails</label>
+                                    <input type="range" class="form-control-range" id="cocktails" name="cocktails" min="0" max="5">
+                                  </div>
+                                  <!-- End cocktails Range -->
+                                  <!-- Begin Beer -->
+                                  <div class="form-group">
+                                    <h3 for="Price" class="form-label">How about beer?</h3>
+                                    <label for="" class="pull-left">No Beers</label>
+                                    <label for="" class="pull-right">Incredible Craft Beers</label>
+                                    <input type="range" class="form-control-range" id="beers" name="beers" min="0" max="5">
+                                  </div>
+                                  <!-- End beer Range -->
+                                  <!-- Begin Food -->
+                                  <div class="form-group">
+                                    <h3 for="Price" class="form-label">How fancy are we feeling?</h3>
+                                    <label for="" class="pull-left">Casual bar food</label>
+                                    <label for="" class="pull-right">Fine Dining</label>
+                                    <input type="range" class="form-control-range" id="food" name="food" min="0" max="5">
+                                  </div>
+                                  <!-- End food Range -->
+                                  <!-- Begin seating -->
+                                  <div class="form-group">
+                                    <h3 for="Price" class="form-label">What's the seating situation?</h3>
+                                    <label for="" class="pull-left">All indoor and cozy</label>
+                                    <label for="" class="pull-right">All outdoor and modern</label>
+                                    <input type="range" class="form-control-range" id="seating" name="seating" min="0" max="5">
+                                  </div>
+                                  <!-- End seating Range -->
+                                     <!-- Begin Price Range -->
+                                  <div class="form-group">
+                                    <h3 for="Price" class="form-label">Are we balling out?</h3>
+                                    <label for="" class="pull-left">$</label>
+                                    <label for="" class="pull-right">$$$$$</label>
+                                    <input type="range" class="form-control-range" id="customRange" name="cost" min="0" max="5">
+                                  </div>
+                                  <!-- End price Range -->
+                                 <div class="form-group">
+                                        <button name="submit" type="submit" class="btn btn-primary">Submit</button>
+                                      </div>
+                                </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!--footer-->
+<footer class="py-6">
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-12 text-muted text-center small-xl">
+                &copy; 2019 Knight - All Rights Reserved
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!--scroll to top-->
+<div class="scroll-top">
+    <i class="fa fa-angle-up" aria-hidden="true"></i>
+</div>
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.7.3/feather.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+<script src="assets/js/scripts.js"></script>
+</body>
+</html>
