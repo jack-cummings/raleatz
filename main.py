@@ -1,15 +1,15 @@
 import pandas as pd
-import datetime
 import numpy as np
+import random
 from fastapi import FastAPI, Request, BackgroundTasks, Response, Cookie
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 # from fastapi.responses import RedirectResponse
-from sqlalchemy import create_engine
+#from sqlalchemy import create_engine
 import traceback
 import sqlite3
-import os
 import uvicorn
+import os
 
 # Launch app and mount assets
 app = FastAPI()
@@ -99,10 +99,10 @@ async def user_input(request: Request):
 
         df['sim_score'] = df.apply(lambda x: calcSimScore(x, out_list), axis=1)
         outdf = df.sort_values('sim_score', ascending= False)
-        recs = outdf['Name'].values.tolist()
+        recs = outdf['Name'].values.tolist()[:2]
 
 
-        return templates.TemplateResponse('rec.html', {"request": request, "rec": recs[0]})
+        return templates.TemplateResponse('rec.html', {"request": request, "rec": random.choice(recs)})
 
     except Exception as e:
         print(e)
@@ -110,4 +110,5 @@ async def user_input(request: Request):
 
 
 if __name__ == '__main__':
-    uvicorn.run(app, port=4242, host='0.0.0.0')
+    if os.environ['MODE'] == 'dev':
+        uvicorn.run(app, port=4242, host='0.0.0.0')
