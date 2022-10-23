@@ -56,17 +56,29 @@
     <div class="container">
         <div class="row pt-3 pricing-table mx-auto">
             <div class="col-12 mx-auto">
-
                     <div class="card">
                         <div class="card-body">
-                            <h2 class="card-title">What would you like to do?</h2>
-                            <div class="text-muted font-weight-medium mt-2"> </div>
-                                <div class="btn-group-sm" role="group" aria-label="Basic example">
-                                    <a href='/input'class="btn btn-primary">Add a Restaurant</a>
-                                    <br><br>
-                                    <a href='/search'class="btn btn-primary">Decide Where to Eat</a>
-                                </div>
-                        </div>
+                            <h1 class="card-title">{{ name }}</h1>
+                            <div class="row">
+                              <div class="col-sm-6">
+                               <ul class="list-unstyled">
+                                  <li>
+<!--                                     <span data-feather="edit-3" width="35" height="35"></span> -->
+                                    <b> Cusine: </b>{{ cusine }}
+                                 </li>
+                                  <li><b>Location: </b>{{ location }}</li>
+                                  <li><b>Cocktails: </b>{{ cocktails }}</li>
+                                  <li><b>Beers: </b>{{ beers }}</li>
+                                </ul>
+                              </div>
+                              <div class="col-sm-6">
+                                <ul class="list-unstyled">
+                                  <li><b>Seating: </b>{{ seating }}</li>
+                                  <li><b>Vibe: </b>{{ vibe }}</li>
+                                  <li><b>Price: </b>{{ price }}</li>
+                                </ul>
+                              </div>
+                         </div>
                     </div>
                 </div>
             </div>
