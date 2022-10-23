@@ -112,10 +112,32 @@ async def user_input(request: Request):
 
         df['sim_score'] = df.apply(lambda x: calcSimScore(x, out_list), axis=1)
         outdf = df.sort_values('sim_score', ascending= False)
-        recs = outdf['Name'].values.tolist()[:2]
+        rec = outdf.loc[0].to_dict()
 
 
-        return templates.TemplateResponse('rec.html', {"request": request, "rec": random.choice(recs)})
+        # Translate Scores to human-readable
+        cocktails_ref ={0:"No Cocktails", 1:"Basic well drinks", 2: "fun and casual", 3:"Good drinks", 4:"Nicer Cocktails",
+                        5:"Fancy and Bougie"}
+        beer_ref ={0:"No beer", 1:"Domestics only", 2: "domestics, basic craft", 3:"Some locals and crafts", 4:"Locals and crafts",
+                        5:"Exceptional locals and crafts"}
+        vibe_ref ={0:"Counter service", 1:"Casual bar food", 2: "fun atmosphere and casual", 3:"Standard sit down", 4:"Date Night",
+                        5:"Fine Dining"}
+        seating_ref ={0:"Indoor intimate", 1:"Indoor cozy", 2: "Indoor modern", 3:"Variety", 4:"More outdoor modern",
+                        5:"All outdoor modern"}
+        price_ref ={0:"Cheap", 1:"$", 2: "$$", 3:"$$$", 4:"$$$$",
+                        5:"$$$$$"}
+
+        rec_trans = rec
+        rec_trans['Cocktails'] = cocktails_ref[rec_trans['Cocktails']]
+        rec_trans['Beer'] = beer_ref[rec_trans['Beer']]
+        rec_trans['Food'] = vibe_ref[rec_trans['Food']]
+        rec_trans['Seating'] = seating_ref[rec_trans['Seating']]
+        rec_trans['Price'] = price_ref[rec_trans['Price']]
+
+        rec['request'] = request
+
+
+        return templates.TemplateResponse('rec.html', rec)
 
     except Exception as e:
         print(e)
