@@ -6,9 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Raleatz</title>
 
-    <!-- Bootstrap CSS / Color Scheme -->
-    <link rel="stylesheet" href="assets/css/journal.css" id="theme-color">
-
+    <link rel="stylesheet" href="assets/css/journal.min.css" id="theme-color">
+<script>
+    $(function () {
+      $('.example-popover').popover({
+        container: 'body'
+      })
+    })
+</script>
 </head>
 <body>
 
@@ -40,13 +45,15 @@
 </nav>
 
 <div class = container>
-    <h1 class="text-primary"> Find a Restaurant</h1>
+    <h1 class="text-primary"> Add a Restaurant</h1>
 <!--Begin sliders-->
-    <form>
+    <form method="post" action="save_input">
+    <div class="form-group">
       <fieldset>
         <fieldset class="form-group">
             <legend class="mt-4">The Basics</legend>
-            <div class="form-group">
+              <label for="name" class="form-label mt-4">Resturant Name</label>
+              <input class="form-control" id="name">
               <label for="cuisine" class="form-label mt-4">Cuisine</label>
               <select class="form-select" id="cuisine">
                 <option value="Select">Select</option>
@@ -56,8 +63,8 @@
                 <option value="Chinese">Chinese</option>
                 <option value="Japanese">Japanese</option>
               </select>
-            </div>
-            <div class="form-group">
+        </fieldset>
+            <fieldset class="form-group">
                 <label for="location" class="form-label mt-4">Location</label>
                   <select class="form-select" id="location">
                     <option value="Select">Select</option>
@@ -67,29 +74,35 @@
                     <option value="Downtown">Downtown</option>
                     <option value="Other">Other</option>
                   </select>
-            </div>
+            </fieldset>
           <legend class="mt-4">Tell me more...</legend>
+          <fieldset class = "form-group">
             <label for="cocktails" class="form-label">Cocktails</label>
             <input type="range" class="form-range" min="0" max="5" step="1" id="cocktails">
             <label for="beer" class="form-label">Beer</label>
             <input type="range" class="form-range" min="0" max="5" step="1" id="beer">
             <label for="vibe" class="form-label">Vibe</label>
-            <input type="range" class="form-range" min="0" max="5" step="1" id="vibe">
+            <input type="range" class="form-range" min="0" max="5" step="1" id="food">
             <label for="seating" class="form-label">Seating</label>
             <input type="range" class="form-range" min="0" max="5" step="1" id="seating">
             <label for="price" class="form-label"> Price</label>
             <input type="range" class="form-range" min="0" max="5" step="1" id="price">
         </fieldset>
+      <fieldset class = "form-group">
         <button type="submit" class="btn btn-primary">Submit</button>
       </fieldset>
+      </fieldset>
+    </div>
     </form>
 </div>
+
 
 
 <!--scroll to top-->
 <div class="scroll-top">
     <i class="fa fa-angle-up" aria-hidden="true"></i>
 </div>
+
 
 </body>
 </html>

@@ -24,7 +24,7 @@ ref_df.to_sql(name=username, con=con, if_exists='replace')
 @app.get("/")
 async def home(request: Request):
     try:
-        return templates.TemplateResponse('index.html', {"request": request})
+        return templates.TemplateResponse('index_v2.html', {"request": request})
 
     except Exception as e:
         print(e)
@@ -33,7 +33,7 @@ async def home(request: Request):
 @app.get("/input")
 async def user_input(request: Request):
     try:
-        return templates.TemplateResponse('input_cont.html', {"request": request})
+        return templates.TemplateResponse('input_cont_v2.html', {"request": request})
 
     except Exception as e:
         print(e)
