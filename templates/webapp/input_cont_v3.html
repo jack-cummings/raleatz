@@ -20,38 +20,40 @@
 </head>
 <body>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
 <!--navigation-->
-<section class="smart-scroll">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <a class="navbar-brand heading-black" href="/">
-                Raleatz
-            </a>
-            <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse"
-                    data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span data-feather="grid"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link page-scroll" href="/input">Add a restaurant</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link page-scroll" href="/search">Find a restaurant</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link page-scroll" href="#faq">About Raleatz</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-</section>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Raleatz</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/input">Add a Restaurant</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/search">Decide Where to eat</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">About Raleatz</a>
+        </li>
+      </ul>
+      <form class="d-flex">
+        <input class="form-control me-sm-2" type="text" placeholder="Search">
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
 
 <!--Generic section-->
 <section>
     <div class="container">
          <form method="post" action="save_input">
-         <legend class="mt-4">The Basics</legend>
+         <legend class="mt-4">Add a restaurant</legend>
          <div class="form-group">
                 <label for="name" class="form-label mt-4">Resturant Name</label>
                 <input id="name" name="name" placeholder="Restaurant Name" type="text" class="form-control">
@@ -61,7 +63,7 @@
                 <div>
                   <select id="cuisine" name="type" required="required" class="custom-select">
                     <option value="Select">Select</option>
-                    <option value="Mexican">Italian</option>
+                    <option value="Italian">Italian</option>
                     <option value="American">American</option>
                     <option value="Mexican">Mexican</option>
                     <option value="Chinese">Chinese</option>
@@ -82,34 +84,44 @@
                   </select>
                 </div>
          </div>
+         <div> </div>
+          <div class="form-check form-switch">
+              <label class="form-check-label" for="flexSwitchCheckChecked">Outdoor seating?</label>
+            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked="">
+
+          </div>
          <legend class="mt-4">The Fun Stuff</legend>
           <!-- Begin Cocktails -->
           <div class="form-group">
-            <label for="cocktails" class="form-label">How were cocktails?</label>
+            <label for="cocktails" class="form-label">Cocktails</label>
+              <small class="text-secondary">(none to craft)</small>
             <input type="range" class="form-range" id="cocktails" name="cocktails" min="0" max="5">
           </div>
           <!-- End cocktails Range -->
           <!-- Begin Beer -->
           <div class="form-group">
-            <label for="beer" class="form-label">How was the beer?</label>
+            <label for="beer" class="form-label">Beer</label>
+              <small class="text-secondary">(none to craft)</small>
             <input type="range" class="form-range" id="beers" name="beers" min="0" max="5">
           </div>
           <!-- End beer Range -->
           <!-- Begin Food -->
           <div class="form-group">
-            <label for="vibe" class="form-label">How was the vibe?</label>
+            <label for="formality" class="form-label">Formality</label>
+                <small class="text-secondary">(counter service to stuffy)</small>
             <input type="range" class="form-range" id="food" name="food" min="0" max="5">
           </div>
           <!-- End food Range -->
           <!-- Begin seating -->
           <div class="form-group">
-            <label for="seating" class="form-label">What's the seating?</label>
+            <label for="feel" class="form-label">Feel</label>
+                <small class="text-secondary">(cozy to modern)</small>
             <input type="range" class="form-range" id="seating" name="seating" min="0" max="5">
           </div>
           <!-- End seating Range -->
              <!-- Begin Price Range -->
           <div class="form-group">
-            <label for="Price" class="form-label">How expensive?</label>
+            <label for="Price" class="form-label">Price</label>
             <input type="range" class="form-range" id="customRange" name="cost" min="0" max="5">
           </div>
           <!-- End price Range -->
