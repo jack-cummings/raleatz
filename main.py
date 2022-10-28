@@ -33,7 +33,7 @@ async def home(request: Request):
 @app.get("/input")
 async def user_input(request: Request):
     try:
-        return templates.TemplateResponse('input_cont_v2.html', {"request": request})
+        return templates.TemplateResponse('input_cont_v3.html', {"request": request})
 
     except Exception as e:
         print(e)
