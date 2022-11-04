@@ -83,7 +83,7 @@ async def save_input(request: Request):
                                            'Price'])
     # Update DB
     username = 'jack_cait'
-    df.to_sql(name=username, con=con, if_exists='append')
+    df.to_sql(name=username, con=con, if_exists='append', index=False)
     print('Record Updated')
 
     # Create Backup
