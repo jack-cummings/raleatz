@@ -4,7 +4,7 @@ import random
 from fastapi import FastAPI, Request, BackgroundTasks, Response, Cookie
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-# from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse
 #from sqlalchemy import create_engine
 import traceback
 import sqlite3
@@ -19,7 +19,8 @@ templates = Jinja2Templates(directory="templates/webapp")
 con = sqlite3.connect("restaurants.db")
 ref_df = pd.read_csv('./rest_ref.csv')
 username = 'jack_cait'
-ref_df.to_sql(name=username, con=con, if_exists='replace')
+ref_df.to_sql(name=username, con=con, if_exists='replace', index=False)
+
 
 @app.get("/")
 async def home(request: Request):
@@ -33,13 +34,13 @@ async def home(request: Request):
                       <ul class="list-unstyled">
                         <li><b>Cocktails:</b><small class="text-secondary">(none to craft)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _cocktailsV_%;" aria-valuenow="_coctailsV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
                         <li><b>Beers:</b><small class="text-secondary">(none to craft)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _beersV_%;" aria-valuenow="_beersV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
-                        <li><b>Formality:</b><small class="text-secondary">(counter service to stuffy)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _seatingV_%;" aria-valuenow="_seatingV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
-                        <li><b>Feel:</b><small class="text-secondary">(cozy to modern)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _vibeV_%;" aria-valuenow="_vibeV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
+                        <li><b>Fanciness:</b><small class="text-secondary">(counter service to stuffy)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _fancinessV_%;" aria-valuenow="_seatingV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
+                        <li><b>Liveliness:</b><small class="text-secondary">(cozy to party)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _cozinessV_%;" aria-valuenow="_vibeV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
                       </ul>
                     </div>
                     </div> """
         # read existing db
-        base_sql = f"""Select Name, Cuisine, Location, Cocktails, Beer, Food, Seating, Price FROM {username} """
+        base_sql = f"""Select Name, Cuisine, Location, Cocktails, Beer, Fanciness, Coziness, Price FROM {username} """
         df = pd.read_sql(base_sql, con=con)
         lol = df.head(10).values.tolist()
         for x in lol:
@@ -49,8 +50,8 @@ async def home(request: Request):
                                                     "_price_", str('$'*x[7])).replace(
                                                     "_cocktailsV_",str(100*(x[3]/5))).replace(
                                                     "_beersV_",str(100*(x[4]/5))).replace(
-                                                    "_seatingV_",str(100*(x[6]/5))).replace(
-                                                    "_vibeV_",str(100*(x[5]/5)))
+                                                    "_fancinessV_",str(100*(x[5]/5))).replace(
+                                                    "_cozinessV_",str(100*(x[6]/5)))
 
         return templates.TemplateResponse('index_inset.html', {"request": request, 'card_inserts':out_html})
 
@@ -67,6 +68,8 @@ async def user_input(request: Request):
         print(e)
         return templates.TemplateResponse('error.html', {"request": request})
 
+
+
 @app.post("/save_input")
 async def save_input(request: Request):
     # Collect User Input
@@ -76,7 +79,7 @@ async def save_input(request: Request):
     for x in body.decode('UTF-8').split('&')[:-1]:
         out_list.append(x.split('=')[1].replace('+', ' '))
     # Create Input Dataframe
-    df = pd.DataFrame([out_list], columns=['Name', 'Cuisine', 'Location', 'Cocktails', 'Beer', 'Food', 'Seating',
+    df = pd.DataFrame([out_list], columns=['Name', 'Cuisine', 'Location', 'Cocktails', 'Beer', 'Fanciness', 'Coziness',
                                            'Price'])
     # Update DB
     username = 'jack_cait'
@@ -87,8 +90,37 @@ async def save_input(request: Request):
     out_df = pd.read_sql(f'select * from {username}', con)
     out_df.to_csv('./rest_ref.csv', index=False)
 
+   # re-render homepage
     try:
-        return templates.TemplateResponse('index.html', {"request": request})
+        # rest card template
+        out_html = ''
+        base_card = """ <div class="card border-primary mb-3" style="max-width: 20rem;">
+                    <div class="card-header">_cuisine_ - _location_ - _price_</div>
+                    <div class="card-body">
+                      <h4 class="card-title">_name_</h4>
+                      <ul class="list-unstyled">
+                        <li><b>Cocktails:</b><small class="text-secondary">(none to craft)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _cocktailsV_%;" aria-valuenow="_coctailsV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
+                        <li><b>Beers:</b><small class="text-secondary">(none to craft)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _beersV_%;" aria-valuenow="_beersV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
+                        <li><b>Fanciness:</b><small class="text-secondary">(counter service to stuffy)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _fancinessV_%;" aria-valuenow="_seatingV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
+                        <li><b>Liveliness:</b><small class="text-secondary">(cozy to party)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _cozinessV_%;" aria-valuenow="_vibeV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
+                      </ul>
+                    </div>
+                    </div> """
+        # read existing db
+        base_sql = f"""Select Name, Cuisine, Location, Cocktails, Beer, Fanciness, Coziness, Price FROM {username} """
+        df = pd.read_sql(base_sql, con=con)
+        lol = df.head(10).values.tolist()
+        for x in lol:
+            out_html = out_html + base_card.replace("_name_", str(x[0])).replace(
+                "_cuisine_", str(x[1])).replace(
+                "_location_", str(x[2])).replace(
+                "_price_", str('$' * x[7])).replace(
+                "_cocktailsV_", str(100 * (x[3] / 5))).replace(
+                "_beersV_", str(100 * (x[4] / 5))).replace(
+                "_fancinessV_", str(100 * (x[5] / 5))).replace(
+                "_cozinessV_", str(100 * (x[6] / 5)))
+
+        return templates.TemplateResponse('index_inset.html', {"request": request, 'card_inserts': out_html})
 
     except Exception as e:
         print(e)
@@ -115,7 +147,7 @@ async def user_input(request: Request):
 
         # Filter down Dataframe
         # Create sql
-        base_sql = f"""Select Name, Cuisine, Location, Cocktails, Beer, Food, Seating, Price FROM {username} """
+        base_sql = f"""Select Name, Cuisine, Location, Cocktails, Beer, Fanciness, Coziness, Price FROM {username} """
         if out_list[0] != 'Any':
             if out_list[1] != 'Any':
                 insert = f"WHERE Cuisine = '{out_list[0]}' and Location = '{out_list[1]}'"
@@ -134,7 +166,7 @@ async def user_input(request: Request):
         # Calculate similarity for remaining rows
         def calcSimScore(row, user_array):
             user_array = np.array([int(i) for i in user_array[2:]])
-            row_array = np.array([row['Cocktails'], row['Beer'], row['Food'], row['Seating'], row['Price']])
+            row_array = np.array([row['Cocktails'], row['Beer'], row['Fanciness'], row['Coziness'], row['Price']])
             dist = np.linalg.norm(user_array - row_array)
             return dist
 
@@ -150,8 +182,8 @@ async def user_input(request: Request):
                       <ul class="list-unstyled">
                         <li><b>Cocktails:</b><small class="text-secondary">(none to craft)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _cocktailsV_%;" aria-valuenow="_coctailsV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
                         <li><b>Beers:</b><small class="text-secondary">(none to craft)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _beersV_%;" aria-valuenow="_beersV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
-                        <li><b>Formality:</b><small class="text-secondary">(counter service to stuffy)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _seatingV_%;" aria-valuenow="_seatingV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
-                        <li><b>Feel:</b><small class="text-secondary">(cozy to modern)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _vibeV_%;" aria-valuenow="_vibeV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
+                        <li><b>Fanciness:</b><small class="text-secondary">(counter service to stuffy)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _seatingV_%;" aria-valuenow="_seatingV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
+                        <li><b>Liveliness:</b><small class="text-secondary">(cozy to party)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _vibeV_%;" aria-valuenow="_vibeV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
                       </ul>
                     </div>
                     </div> """

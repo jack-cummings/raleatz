@@ -45,13 +45,12 @@
 <section>
     <div class="container">
          <form method="post" action="run_search">
-         <legend class="mt-4">Find a Place</legend>
+         <legend class="mt-4">Find a restaurant</legend>
          <div class="form-group">
                 <label for="food">What kind of food?</label>
                 <div>
-                  <select id="cuisine" name="type" required="required" class="custom-select">
+                  <select id="cuisine" name="type" required="required" class="form-select">
                     <option value="Select">Select</option>
-                    <option value="Any">Any</option>
                     <option value="Italian">Italian</option>
                     <option value="American">American</option>
                     <option value="Mexican">Mexican</option>
@@ -61,11 +60,10 @@
                 </div>
          </div>
          <div class="form-group">
-                <label for="location">Where was it?</label>
+                <label for="location">Where do you want to go?</label>
                 <div>
-                  <select id="location" name="location" required="required" class="custom-select">
+                  <select id="location" name="location" required="required" class="form-select">
                     <option value="Select">Select</option>
-                    <option value="Any">Any</option>
                     <option value="North Hills">North Hills</option>
                     <option value="Five Points">Five Points</option>
                     <option value="Glenwood South<">Glenwood South</option>
@@ -74,12 +72,12 @@
                   </select>
                 </div>
          </div>
-         <div> </div>
-          <div class="form-check form-switch">
-              <label class="form-check-label" for="flexSwitchCheckChecked">Outdoor seating?</label>
-            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked="">
+<!--         <div> </div>-->
+<!--          <div class="form-check form-switch">-->
+<!--              <label class="form-check-label" for="flexSwitchCheckChecked">Outdoor seating?</label>-->
+<!--            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked="">-->
 
-          </div>
+<!--          </div>-->
          <legend class="mt-4">The Fun Stuff</legend>
           <!-- Begin Cocktails -->
           <div class="form-group">
@@ -90,29 +88,29 @@
           <!-- End cocktails Range -->
           <!-- Begin Beer -->
           <div class="form-group">
-            <label for="beer" class="form-label">Beer</label>
+            <label for="beers" class="form-label">Beer</label>
               <small class="text-secondary">(none to craft)</small>
             <input type="range" class="form-range" id="beers" name="beers" min="0" max="5">
           </div>
           <!-- End beer Range -->
           <!-- Begin Food -->
           <div class="form-group">
-            <label for="formality" class="form-label">Formality</label>
+            <label for="fanciness" class="form-label">fanciness</label>
                 <small class="text-secondary">(counter service to stuffy)</small>
-            <input type="range" class="form-range" id="food" name="food" min="0" max="5">
+            <input type="range" class="form-range" id="fanciness" name="fanciness" min="0" max="5">
           </div>
           <!-- End food Range -->
           <!-- Begin seating -->
           <div class="form-group">
-            <label for="feel" class="form-label">Feel</label>
-                <small class="text-secondary">(cozy to modern)</small>
-            <input type="range" class="form-range" id="seating" name="seating" min="0" max="5">
+            <label for="Coziness" class="form-label">Liveliness</label>
+                <small class="text-secondary">(cozy to party)</small>
+            <input type="range" class="form-range" id="coziness" name="coziness" min="0" max="5">
           </div>
           <!-- End seating Range -->
              <!-- Begin Price Range -->
           <div class="form-group">
-            <label for="Price" class="form-label">Price</label>
-            <input type="range" class="form-range" id="customRange" name="cost" min="0" max="5">
+            <label for="cost" class="form-label">Price</label>
+            <input type="range" class="form-range" id="cost" name="cost" min="0" max="5">
           </div>
           <!-- End price Range -->
          <div class="form-group">

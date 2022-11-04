@@ -1,3 +1,8 @@
-,index,Name,Cuisine,Location,Cocktails,Beer,Food,Seating,Price
-0,0,La Rancharita,Mexican,Other,4,2,4,1,2
-1,0,Bowstring,American,Other,2,1,1,1,2
+Name,Cuisine,Location,Cocktails,Beer,Fanciness,Coziness,Price
+La Rancharita,Mexican,Other,4,2,3,1,2
+Bowstring,American,Other,2,1,1,1,2
+Torchys,Mexican,North Hills,3,1,0,3,1
+Stir,American,North Hills,5,1,4,4,4
+Trophy Pizza,American,Glenwood South%3C,4,5,2,4,3
+Cafe Luna,Italian,Downtown,3,0,4,0,2
+Oku,Japanese,Downtown,4,1,4,4,4
