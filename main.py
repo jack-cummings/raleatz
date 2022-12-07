@@ -6,10 +6,12 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
 #from sqlalchemy import create_engine
+import starlette.status as status
 import traceback
 import sqlite3
 import uvicorn
 import os
+import subprocess
 
 # Launch app and mount assets
 app = FastAPI()
@@ -72,55 +74,30 @@ async def user_input(request: Request):
 
 @app.post("/save_input")
 async def save_input(request: Request):
-    # Collect User Input
-    body = await request.body()
-    print(body)
-    out_list = []
-    for x in body.decode('UTF-8').split('&')[:-1]:
-        out_list.append(x.split('=')[1].replace('+', ' '))
-    # Create Input Dataframe
-    df = pd.DataFrame([out_list], columns=['Name', 'Cuisine', 'Location', 'Cocktails', 'Beer', 'Fanciness', 'Coziness',
-                                           'Price'])
-    # Update DB
-    username = 'jack_cait'
-    df.to_sql(name=username, con=con, if_exists='append', index=False)
-    print('Record Updated')
-
-    # Create Backup
-    out_df = pd.read_sql(f'select * from {username}', con)
-    out_df.to_csv('./rest_ref.csv', index=False)
-
-   # re-render homepage
     try:
-        # rest card template
-        out_html = ''
-        base_card = """ <div class="card border-primary mb-3" style="max-width: 20rem;">
-                    <div class="card-header">_cuisine_ - _location_ - _price_</div>
-                    <div class="card-body">
-                      <h4 class="card-title">_name_</h4>
-                      <ul class="list-unstyled">
-                        <li><b>Cocktails:</b><small class="text-secondary">(none to craft)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _cocktailsV_%;" aria-valuenow="_coctailsV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
-                        <li><b>Beers:</b><small class="text-secondary">(none to craft)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _beersV_%;" aria-valuenow="_beersV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
-                        <li><b>Fanciness:</b><small class="text-secondary">(counter service to stuffy)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _fancinessV_%;" aria-valuenow="_seatingV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
-                        <li><b>Liveliness:</b><small class="text-secondary">(cozy to party)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _cozinessV_%;" aria-valuenow="_vibeV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
-                      </ul>
-                    </div>
-                    </div> """
-        # read existing db
-        base_sql = f"""Select Name, Cuisine, Location, Cocktails, Beer, Fanciness, Coziness, Price FROM {username} """
-        df = pd.read_sql(base_sql, con=con)
-        lol = df.head(10).values.tolist()
-        for x in lol:
-            out_html = out_html + base_card.replace("_name_", str(x[0])).replace(
-                "_cuisine_", str(x[1])).replace(
-                "_location_", str(x[2])).replace(
-                "_price_", str('$' * x[7])).replace(
-                "_cocktailsV_", str(100 * (x[3] / 5))).replace(
-                "_beersV_", str(100 * (x[4] / 5))).replace(
-                "_fancinessV_", str(100 * (x[5] / 5))).replace(
-                "_cozinessV_", str(100 * (x[6] / 5)))
+        # Collect User Input
+        body = await request.body()
+        print(body)
+        out_list = []
+        for x in body.decode('UTF-8').split('&')[:-1]:
+            out_list.append(x.split('=')[1].replace('+', ' '))
+        # Create Input Dataframe
+        df = pd.DataFrame([out_list], columns=['Name', 'Cuisine', 'Location', 'Cocktails', 'Beer', 'Fanciness', 'Coziness',
+                                               'Price'])
+        # Update DB
+        username = 'jack_cait'
+        df.to_sql(name=username, con=con, if_exists='append', index=False)
+        print('Record Updated')
 
-        return templates.TemplateResponse('index_inset.html', {"request": request, 'card_inserts': out_html})
+        # Create Backup
+        out_df = pd.read_sql(f'select * from {username}', con)
+        out_df.to_csv('./rest_ref.csv', index=False)
+
+        # # push new to git
+        # subprocess.run(['sh', f'./push_ref.sh'], capture_output=True, text=True, shell=True, input='hazelnut')
+
+        # re-direct to index
+        return RedirectResponse('/', status_code=status.HTTP_302_FOUND)
 
     except Exception as e:
         print(e)
@@ -150,12 +127,12 @@ async def user_input(request: Request):
         base_sql = f"""Select Name, Cuisine, Location, Cocktails, Beer, Fanciness, Coziness, Price FROM {username} """
         if out_list[0] != 'Any':
             if out_list[1] != 'Any':
-                insert = f"WHERE Cuisine = '{out_list[0]}' and Location = '{out_list[1]}'"
+                insert = f"WHERE Cuisine = '{out_list[0].strip()}' and Location = '{out_list[1].strip()}'"
             else:
-                insert = f"WHERE Cuisine = '{out_list[0]}'"
+                insert = f"WHERE Cuisine = '{out_list[0].strip()}'"
         else:
             if out_list[1] != 'Any':
-                insert = f"WHERE Location = '{out_list[1]}'"
+                insert = f"WHERE Location = '{out_list[1].strip()}'"
             else:
                 insert =""
         sql = base_sql+insert
@@ -187,7 +164,7 @@ async def user_input(request: Request):
                       </ul>
                     </div>
                     </div> """
-        lol = outdf.head(1).values.tolist()
+        lol = outdf.head(5).values.tolist()
         for x in lol:
             out_html = out_html+base_card.replace("_name_",str(x[0])).replace(
                                                     "_cuisine_",str(x[1])).replace(
@@ -195,8 +172,8 @@ async def user_input(request: Request):
                                                     "_price_", str('$'*x[7])).replace(
                                                     "_cocktailsV_",str(100*(x[3]/5))).replace(
                                                     "_beersV_",str(100*(x[4]/5))).replace(
-                                                    "_seatingV_",str(100*(x[6]/5))).replace(
-                                                    "_vibeV_",str(100*(x[5]/5)))
+                                                    "_seatingV_",str(100*(x[5]/5))).replace(
+                                                    "_vibeV_",str(100*(x[6]/5)))
 
 
         return templates.TemplateResponse('rec.html', {"request": request, 'card_inserts':out_html})
