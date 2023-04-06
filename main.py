@@ -37,7 +37,7 @@ async def home(request: Request):
                         <li><b>Cocktails:</b><small class="text-secondary">(none to craft)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _cocktailsV_%;" aria-valuenow="_coctailsV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
                         <li><b>Beers:</b><small class="text-secondary">(none to craft)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _beersV_%;" aria-valuenow="_beersV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
                         <li><b>Fanciness:</b><small class="text-secondary">(counter service to stuffy)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _fancinessV_%;" aria-valuenow="_seatingV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
-                        <li><b>Liveliness:</b><small class="text-secondary">(cozy to party)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _cozinessV_%;" aria-valuenow="_vibeV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
+                        <li><b>Cosiness:</b><small class="text-secondary">(cozy to party)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _cozinessV_%;" aria-valuenow="_vibeV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
                       </ul>
                     </div>
                     </div> """
@@ -141,14 +141,19 @@ async def user_input(request: Request):
             df = pd.read_sql(base_sql, con=con)
 
         # Calculate similarity for remaining rows
+        # remove columsn where row = 0
         def calcSimScore(row, user_array):
             user_array = np.array([int(i) for i in user_array[2:]])
             row_array = np.array([row['Cocktails'], row['Beer'], row['Fanciness'], row['Coziness'], row['Price']])
+            #set row array to zeros where user specified zeros to avoid search on that attribute
+            drop_indexes = np.where(user_array==0)[0].tolist()
+            for x in drop_indexes:
+                row_array[x] = 0
             dist = np.linalg.norm(user_array - row_array)
             return dist
 
-        df['sim_score'] = df.apply(lambda x: calcSimScore(x, out_list), axis=1)
-        outdf = df.sort_values('sim_score', ascending= False)
+        df['dif_score'] = df.apply(lambda x: calcSimScore(x, out_list), axis=1)
+        outdf = df.sort_values('dif_score', ascending= True)
 
         # rest card template
         out_html = ''
@@ -160,7 +165,7 @@ async def user_input(request: Request):
                         <li><b>Cocktails:</b><small class="text-secondary">(none to craft)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _cocktailsV_%;" aria-valuenow="_coctailsV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
                         <li><b>Beers:</b><small class="text-secondary">(none to craft)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _beersV_%;" aria-valuenow="_beersV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
                         <li><b>Fanciness:</b><small class="text-secondary">(counter service to stuffy)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _seatingV_%;" aria-valuenow="_seatingV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
-                        <li><b>Liveliness:</b><small class="text-secondary">(cozy to party)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _vibeV_%;" aria-valuenow="_vibeV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
+                        <li><b>Cosiness:</b><small class="text-secondary">(cozy to party)</small><div class="progress"><div class="progress-bar" role="progressbar" style="width: _vibeV_%;" aria-valuenow="_vibeV_" aria-valuemin="0" aria-valuemax="100"></div></div></li>
                       </ul>
                     </div>
                     </div> """
