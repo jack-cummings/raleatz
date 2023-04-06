@@ -12,6 +12,24 @@ import sqlite3
 import uvicorn
 import os
 import subprocess
+import gspread
+
+def drive_con():
+    creds = {
+      "type": os.environ['g_type'],
+      "project_id": os.environ['g_proj_id'],
+      "private_key_id": os.environ['g_priv_key_id'],
+      "private_key": os.environ['g_priv_key'].replace('\\n', '\n'),
+      "client_email": os.environ['g_client_email'],
+      "client_id": os.environ['g_client_id'],
+      "auth_uri": os.environ['g_auth_uri'],
+      "token_uri": os.environ['g_token_uri'],
+      "auth_provider_x509_cert_url": os.environ['g_auth_prov_cirt'],
+      "client_x509_cert_url": os.environ['g_client_cirt_url'],
+    }
+    sa = gspread.service_account_from_dict(creds)
+    return sa
+
 
 # Launch app and mount assets
 app = FastAPI()
@@ -19,7 +37,9 @@ app.mount("/assets", StaticFiles(directory="assets"), name="assets")
 templates = Jinja2Templates(directory="templates/webapp")
 # Init DB from most recent backup
 con = sqlite3.connect("restaurants.db")
-ref_df = pd.read_csv('./rest_ref.csv')
+sa = drive_con()
+sh = sa.open('raleatz_db').sheet1
+ref_df = pd.DataFrame(sh.get_all_records())
 username = 'jack_cait'
 ref_df.to_sql(name=username, con=con, if_exists='replace', index=False)
 
@@ -88,10 +108,13 @@ async def save_input(request: Request):
         username = 'jack_cait'
         df.to_sql(name=username, con=con, if_exists='append', index=False)
         print('Record Updated')
-
-        # Create Backup
+        #
+        # # Create Backup
+        # out_df = pd.read_sql(f'select * from {username}', con)
+        # out_df.to_csv('./rest_ref.csv', index=False)
+        # write to sheet
         out_df = pd.read_sql(f'select * from {username}', con)
-        out_df.to_csv('./rest_ref.csv', index=False)
+        sh.update([out_df.columns.values.tolist()] + out_df.values.tolist())
 
         # # push new to git
         # subprocess.run(['sh', f'./push_ref.sh'], capture_output=True, text=True, shell=True, input='hazelnut')
