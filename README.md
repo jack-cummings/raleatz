@@ -7,7 +7,7 @@ https://github.com/jack-cummings/raleatz/assets/96400016/71313f78-3a08-4d84-a505
 
 # Tech Stack
 - Python
-- SQL Light
+- SQLight
 - Dynamically generated SQL
 - Boostrap CSS
 - HTML
